@@ -1,0 +1,85 @@
+﻿@model IEnumerable<Hotel.ViewModel.EventViewModel>
+<link href="~/Content/styles.css" rel="stylesheet" />
+<table style="width: 100%">
+    <thead>
+        <tr>
+            
+            <th>
+                Заказчик
+            </th>
+            <th>
+                Контактный номер
+            </th>
+            <th>
+                Мероприятие
+            </th>
+            <th>
+                Дата мероприятия
+            </th>
+            <th>
+                Количество гостей
+            </th>
+            <th>
+                Общая стоимость
+            </th>
+            <th>
+                Класс помещения
+            </th>
+            <th>
+                Помещение
+            </th>
+        </tr>
+
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+            <td >
+                @item.FullName
+            </td>
+            <td >
+                @item.ContactPhone
+            </td>
+            <td >
+                @item.Name
+            </td>
+            <td >
+                @item.C_Date.ToString("dd.MM.yyyy")
+            </td>
+            <td >
+                @item.Visitors
+            </td>
+            <td >
+                <!--rowspan="item.Rooms.Count()"-->
+                @item.Bill
+            </td>
+            </tr>
+           foreach (var i in item.Rooms)
+                {
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                            @i.CategoryClass
+                        </td>
+                        <td>
+                            @i.Room
+                        </td>
+                    </tr>
+                 }
+                
+         }
+
+    </tbody>
+</table>

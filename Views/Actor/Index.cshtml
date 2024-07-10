@@ -1,0 +1,115 @@
+﻿@model Hotel.ViewModel.EmployeesView
+@{
+    ViewBag.Title = "Index";
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        LoadActorDetails();
+        LoadChangeDetails();
+    });
+
+
+    function LoadActorDetails() {
+
+        $.ajax({
+            async: true,
+            data: 'GET',
+            dataType: 'HTML',
+            contentType: false,
+            processData: false,
+            url: '/Actor/GetAllEmployees',
+            success: function (data) {
+                $("#divLoadEmps").html(data);
+            },
+            error: function () {
+                alert('Возникли проблемы с вашим запросом.');
+            }
+        })
+    }
+
+    function LoadChangeDetails() {
+
+        $.ajax({
+            async: true,
+            data: 'GET',
+            dataType: 'HTML',
+            contentType: false,
+            processData: false,
+            url: '/Actor/GetChange',
+            success: function (data) {
+                $("#divLoadChange").html(data);
+            },
+            error: function () {
+                alert('Возникли проблемы с вашим запросом.');
+            }
+        })
+    }
+
+    function DeclineActor(ID) {
+        var result = confirm("Вы уверены, что хотите удалить заявку? ");
+        if (result === false) {
+            return false;
+        }
+        $.ajax({
+            async: true,
+            type: 'GET',
+            dataType: 'JSON',
+            contentType: 'application/json; charset=utf-8',
+            data: { ID: ID },
+            url: '/Actor/DeclineActor',
+            success: function (data) {
+                if (data.success === true) {
+                    alert(data.message);
+                    LoadActorDetails();
+                    LoadChangeDetails();
+                }
+            },
+            error: function () {
+                alert("Возникли проблемы с вашим запросом. Попробуйте позже");
+            }
+        });
+    }
+
+    function VerifyActor(ID) {
+        var re2 = confirm("Вы уверены, что хотите принять сотрудника?");
+        if (re2 === false) {
+            return false;
+        }
+        $.ajax({
+            async: true,
+            type: 'GET',
+            dataType: 'JSON',
+            contentType: 'application/json; charset=utf-8',
+            data: { ID: ID },
+            url: '/Actor/VerifyActor',
+            success: function (data) {
+                if (data.success === true) {
+                    alert(data.message);
+                    LoadActorDetails();
+                    LoadChangeDetails();
+                }
+
+            },
+            error: function (xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+            }
+        });
+    }
+
+</script>
+
+<h3>Поступившие заявки в команду сотрудников</h3>
+
+<div style="margin-top: 40px"></div>
+<div id="divLoadEmps">
+
+</div>
+
+<h3>Учёт работы по сменам</h3>
+
+<div style="margin-top: 40px"></div>
+<div id="divLoadChange">
+
+</div>

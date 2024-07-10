@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="0073362eda3b41ca9240d6355b24fa3f" Name="Diagram1" ZoomLevel="93">
+        <EntityTypeShape EntityType="hosteldatModel.Actor" Width="1.5" PointX="3" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hosteldatModel.Booking" Width="1.5" PointX="7.5" PointY="14.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="hosteldatModel.BookingRooms" Width="1.5" PointX="12.75" PointY="15" IsExpanded="true" />
+        <EntityTypeShape EntityType="hosteldatModel.Change" Width="1.5" PointX="5.25" PointY="11.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="hosteldatModel.Cleaning" Width="1.5" PointX="7.5" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="hosteldatModel.Event" Width="1.5" PointX="10.625" PointY="13" IsExpanded="true" />
+        <EntityTypeShape EntityType="hosteldatModel.Receipt" Width="1.5" PointX="5.25" PointY="21.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="hosteldatModel.Request" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hosteldatModel.Roles" Width="1.5" PointX="0.75" PointY="9.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="hosteldatModel.RoomClass" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="hosteldatModel.RoomEating" Width="1.5" PointX="3" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="hosteldatModel.RoomWindow" Width="1.5" PointX="3" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="hosteldatModel.sysdiagrams" Width="1.5" PointX="7.75" PointY="4.75" IsExpanded="true" />
+        <AssociationConnector Association="hosteldatModel.FK_Actor_Cleaner" ManuallyRouted="false" />
+        <AssociationConnector Association="hosteldatModel.FK_Agent" ManuallyRouted="false" />
+        <AssociationConnector Association="hosteldatModel.FK_Agent_Ev" ManuallyRouted="false" />
+        <AssociationConnector Association="hosteldatModel.FK_Agent_Rec" ManuallyRouted="false" />
+        <AssociationConnector Association="hosteldatModel.FK_Client" ManuallyRouted="false" />
+        <AssociationConnector Association="hosteldatModel.FK_Client_Ev" ManuallyRouted="false" />
+        <AssociationConnector Association="hosteldatModel.FK_Client_Rec" ManuallyRouted="false" />
+        <AssociationConnector Association="hosteldatModel.FK_Role" ManuallyRouted="false" />
+        <AssociationConnector Association="hosteldatModel.FK_BookingID" ManuallyRouted="false" />
+        <AssociationConnector Association="hosteldatModel.FK_Receipt" ManuallyRouted="false" />
+        <AssociationConnector Association="hosteldatModel.FK_Change_Dirt" ManuallyRouted="false" />
+        <AssociationConnector Association="hosteldatModel.FK_Receipt_Ev" ManuallyRouted="false" />
+        <AssociationConnector Association="hosteldatModel.Actors" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="hosteldatModel.Room" Width="1.5" PointX="5.25" PointY="2" />
+        <AssociationConnector Association="hosteldatModel.FK_Rooms" />
+        <AssociationConnector Association="hosteldatModel.FK_Room" />
+        <AssociationConnector Association="hosteldatModel.FK_Class" />
+        <AssociationConnector Association="hosteldatModel.FK_Eating" />
+        <AssociationConnector Association="hosteldatModel.FK_Window" />
+        <EntityTypeShape EntityType="hosteldatModel.EventRooms" Width="1.5" PointX="10.5" PointY="7.625" />
+        <AssociationConnector Association="hosteldatModel.FK_EventID" />
+        <AssociationConnector Association="hosteldatModel.FK_RoomsEvent" />
+        <EntityTypeShape EntityType="hosteldatModel.TempRooms" Width="1.5" PointX="10.375" PointY="0.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

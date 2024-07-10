@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Hotel.ViewModel.CleanJournalView>
+<link href="~/Content/styles.css" rel="stylesheet"  />
+<table style="width: 100%">
+    <thead>
+        <tr>
+            <th>
+                Комната №
+            </th>
+            <th>
+                Смена №
+            </th>
+            <th>
+                Уборщик
+            </th>
+            <th>
+                Дата / Время уборки
+            </th>
+        </tr>
+
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Room
+                </td>
+                <td>
+                    @item.ChangeID
+                </td>
+                <td>
+                    @item.FullName
+                </td>
+                <td>
+                    @item.Today.ToString("dd.MM.yyy  HH\\:mm")
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

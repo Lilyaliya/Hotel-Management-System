@@ -1,0 +1,522 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Хранилище hosteldatModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Actor">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FullName" Type="varchar" MaxLength="90" Nullable="false" />
+    <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="ContactPhone" Type="varchar" MaxLength="15" />
+    <Property Name="Passport" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="Role" Type="varchar" MaxLength="25" Nullable="false" />
+    <Property Name="Login" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="VerifiedBy" Type="int" />
+  </EntityType>
+  <EntityType Name="Actors">
+    <Key>
+      <PropertyRef Name="ChangeID" />
+      <PropertyRef Name="ActorID" />
+    </Key>
+    <Property Name="ChangeID" Type="int" Nullable="false" />
+    <Property Name="ActorID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Booking">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FullPayment" Type="bit" Nullable="false" />
+    <Property Name="Agent" Type="int" Nullable="false" />
+    <Property Name="Client" Type="int" Nullable="false" />
+    <Property Name="CreatedAt" Type="datetime2" Precision="7" Nullable="false" />
+    <Property Name="Arrival" Type="datetime2" Precision="7" Nullable="false" />
+    <Property Name="Departure" Type="datetime2" Precision="7" Nullable="false" />
+    <Property Name="Receipt" Type="int" />
+    <Property Name="_Contract" Type="varchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="BookingRooms">
+    <Key>
+      <PropertyRef Name="BookingID" />
+      <PropertyRef Name="Room" />
+    </Key>
+    <Property Name="BookingID" Type="int" Nullable="false" />
+    <Property Name="Room" Type="int" Nullable="false" />
+    <Property Name="Type" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Change">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Actors" Type="int" />
+    <Property Name="ChangeDate" Type="datetime2" Precision="7" />
+  </EntityType>
+  <EntityType Name="Cleaning">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Room" Type="int" Nullable="false" />
+    <Property Name="ChangeID" Type="int" Nullable="false" />
+    <Property Name="Today" Type="datetime2" Precision="7" Nullable="false" />
+    <Property Name="Actor" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Event">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Agent" Type="int" Nullable="false" />
+    <Property Name="Client" Type="int" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="_Date" Type="datetime2" Precision="7" Nullable="false" />
+    <Property Name="Visitors" Type="int" Nullable="false" />
+    <Property Name="ReceiptID" Type="int" />
+  </EntityType>
+  <EntityType Name="EventRooms">
+    <Key>
+      <PropertyRef Name="EventID" />
+      <PropertyRef Name="Room" />
+    </Key>
+    <Property Name="EventID" Type="int" Nullable="false" />
+    <Property Name="Room" Type="int" Nullable="false" />
+    <Property Name="Type" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Receipt">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Agent" Type="int" Nullable="false" />
+    <Property Name="Client" Type="int" Nullable="false" />
+    <Property Name="Bill" Type="smallmoney" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Request">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FullName" Type="varchar" MaxLength="90" Nullable="false" />
+    <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="ContactPhone" Type="varchar" MaxLength="15" />
+    <Property Name="Passport" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="Role" Type="varchar" MaxLength="25" Nullable="false" />
+    <Property Name="Login" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Roles">
+    <Key>
+      <PropertyRef Name="Role" />
+    </Key>
+    <Property Name="Role" Type="varchar" MaxLength="25" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Room">
+    <Key>
+      <PropertyRef Name="RoomNum" />
+    </Key>
+    <Property Name="RoomNum" Type="int" Nullable="false" />
+    <Property Name="Places" Type="int" />
+    <Property Name="CategoryClass" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="CategoryWindow" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="CategoryEating" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="_Floor" Type="int" Nullable="false" />
+    <Property Name="cost" Type="smallmoney" Nullable="false" />
+    <Property Name="dirty" Type="bit" Nullable="false" />
+    <Property Name="Image" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="RoomClass">
+    <Key>
+      <PropertyRef Name="Class" />
+    </Key>
+    <Property Name="Class" Type="varchar" MaxLength="30" Nullable="false" />
+  </EntityType>
+  <EntityType Name="RoomEating">
+    <Key>
+      <PropertyRef Name="Eating" />
+    </Key>
+    <Property Name="Eating" Type="varchar" MaxLength="30" Nullable="false" />
+  </EntityType>
+  <EntityType Name="RoomWindow">
+    <Key>
+      <PropertyRef Name="Window" />
+    </Key>
+    <Property Name="Window" Type="varchar" MaxLength="30" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="TempRooms">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ActorID" Type="int" Nullable="false" />
+    <Property Name="Room" Type="int" Nullable="false" />
+    <Property Name="CategoryClass" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <Association Name="FK_Actor">
+    <End Role="Actor" Type="Self.Actor" Multiplicity="1" />
+    <End Role="Actors" Type="Self.Actors" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Actor">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Actors">
+        <PropertyRef Name="ActorID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Actor_Cleaner">
+    <End Role="Actor" Type="Self.Actor" Multiplicity="1" />
+    <End Role="Cleaning" Type="Self.Cleaning" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Actor">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Cleaning">
+        <PropertyRef Name="Actor" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Agent">
+    <End Role="Actor" Type="Self.Actor" Multiplicity="1" />
+    <End Role="Booking" Type="Self.Booking" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Actor">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Booking">
+        <PropertyRef Name="Agent" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Agent_Ev">
+    <End Role="Actor" Type="Self.Actor" Multiplicity="1" />
+    <End Role="Event" Type="Self.Event" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Actor">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Event">
+        <PropertyRef Name="Agent" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Agent_Rec">
+    <End Role="Actor" Type="Self.Actor" Multiplicity="1" />
+    <End Role="Receipt" Type="Self.Receipt" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Actor">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Receipt">
+        <PropertyRef Name="Agent" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_BookingID">
+    <End Role="Booking" Type="Self.Booking" Multiplicity="1" />
+    <End Role="BookingRooms" Type="Self.BookingRooms" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Booking">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="BookingRooms">
+        <PropertyRef Name="BookingID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Change">
+    <End Role="Change" Type="Self.Change" Multiplicity="1" />
+    <End Role="Actors" Type="Self.Actors" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Change">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Actors">
+        <PropertyRef Name="ChangeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Change_Dirt">
+    <End Role="Change" Type="Self.Change" Multiplicity="1" />
+    <End Role="Cleaning" Type="Self.Cleaning" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Change">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Cleaning">
+        <PropertyRef Name="ChangeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Class">
+    <End Role="RoomClass" Type="Self.RoomClass" Multiplicity="1" />
+    <End Role="Room" Type="Self.Room" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RoomClass">
+        <PropertyRef Name="Class" />
+      </Principal>
+      <Dependent Role="Room">
+        <PropertyRef Name="CategoryClass" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Client">
+    <End Role="Actor" Type="Self.Actor" Multiplicity="1" />
+    <End Role="Booking" Type="Self.Booking" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Actor">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Booking">
+        <PropertyRef Name="Client" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Client_Ev">
+    <End Role="Actor" Type="Self.Actor" Multiplicity="1" />
+    <End Role="Event" Type="Self.Event" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Actor">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Event">
+        <PropertyRef Name="Client" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Client_Rec">
+    <End Role="Actor" Type="Self.Actor" Multiplicity="1" />
+    <End Role="Receipt" Type="Self.Receipt" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Actor">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Receipt">
+        <PropertyRef Name="Client" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Eating">
+    <End Role="RoomEating" Type="Self.RoomEating" Multiplicity="1" />
+    <End Role="Room" Type="Self.Room" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RoomEating">
+        <PropertyRef Name="Eating" />
+      </Principal>
+      <Dependent Role="Room">
+        <PropertyRef Name="CategoryEating" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_EventID">
+    <End Role="Event" Type="Self.Event" Multiplicity="1" />
+    <End Role="EventRooms" Type="Self.EventRooms" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Event">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="EventRooms">
+        <PropertyRef Name="EventID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Receipt">
+    <End Role="Receipt" Type="Self.Receipt" Multiplicity="0..1" />
+    <End Role="Booking" Type="Self.Booking" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Receipt">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Booking">
+        <PropertyRef Name="Receipt" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Receipt_Ev">
+    <End Role="Receipt" Type="Self.Receipt" Multiplicity="0..1" />
+    <End Role="Event" Type="Self.Event" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Receipt">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Event">
+        <PropertyRef Name="ReceiptID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Role">
+    <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+    <End Role="Actor" Type="Self.Actor" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Roles">
+        <PropertyRef Name="Role" />
+      </Principal>
+      <Dependent Role="Actor">
+        <PropertyRef Name="Role" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Room">
+    <End Role="Room" Type="Self.Room" Multiplicity="1" />
+    <End Role="Cleaning" Type="Self.Cleaning" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Room">
+        <PropertyRef Name="RoomNum" />
+      </Principal>
+      <Dependent Role="Cleaning">
+        <PropertyRef Name="Room" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Rooms">
+    <End Role="Room" Type="Self.Room" Multiplicity="1" />
+    <End Role="BookingRooms" Type="Self.BookingRooms" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Room">
+        <PropertyRef Name="RoomNum" />
+      </Principal>
+      <Dependent Role="BookingRooms">
+        <PropertyRef Name="Room" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RoomsEvent">
+    <End Role="Room" Type="Self.Room" Multiplicity="1" />
+    <End Role="EventRooms" Type="Self.EventRooms" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Room">
+        <PropertyRef Name="RoomNum" />
+      </Principal>
+      <Dependent Role="EventRooms">
+        <PropertyRef Name="Room" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Window">
+    <End Role="RoomWindow" Type="Self.RoomWindow" Multiplicity="1" />
+    <End Role="Room" Type="Self.Room" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RoomWindow">
+        <PropertyRef Name="Window" />
+      </Principal>
+      <Dependent Role="Room">
+        <PropertyRef Name="CategoryWindow" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Хранилище hosteldatModelContainer">
+    <EntitySet Name="Actor" EntityType="Self.Actor" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Actors" EntityType="Self.Actors" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Booking" EntityType="Self.Booking" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="BookingRooms" EntityType="Self.BookingRooms" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Change" EntityType="Self.Change" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Cleaning" EntityType="Self.Cleaning" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Event" EntityType="Self.Event" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EventRooms" EntityType="Self.EventRooms" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Receipt" EntityType="Self.Receipt" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Request" EntityType="Self.Request" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Room" EntityType="Self.Room" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RoomClass" EntityType="Self.RoomClass" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RoomEating" EntityType="Self.RoomEating" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RoomWindow" EntityType="Self.RoomWindow" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TempRooms" EntityType="Self.TempRooms" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Actor" Association="Self.FK_Actor">
+      <End Role="Actor" EntitySet="Actor" />
+      <End Role="Actors" EntitySet="Actors" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Actor_Cleaner" Association="Self.FK_Actor_Cleaner">
+      <End Role="Actor" EntitySet="Actor" />
+      <End Role="Cleaning" EntitySet="Cleaning" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Agent" Association="Self.FK_Agent">
+      <End Role="Actor" EntitySet="Actor" />
+      <End Role="Booking" EntitySet="Booking" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Agent_Ev" Association="Self.FK_Agent_Ev">
+      <End Role="Actor" EntitySet="Actor" />
+      <End Role="Event" EntitySet="Event" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Agent_Rec" Association="Self.FK_Agent_Rec">
+      <End Role="Actor" EntitySet="Actor" />
+      <End Role="Receipt" EntitySet="Receipt" />
+    </AssociationSet>
+    <AssociationSet Name="FK_BookingID" Association="Self.FK_BookingID">
+      <End Role="Booking" EntitySet="Booking" />
+      <End Role="BookingRooms" EntitySet="BookingRooms" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Change" Association="Self.FK_Change">
+      <End Role="Change" EntitySet="Change" />
+      <End Role="Actors" EntitySet="Actors" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Change_Dirt" Association="Self.FK_Change_Dirt">
+      <End Role="Change" EntitySet="Change" />
+      <End Role="Cleaning" EntitySet="Cleaning" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Class" Association="Self.FK_Class">
+      <End Role="RoomClass" EntitySet="RoomClass" />
+      <End Role="Room" EntitySet="Room" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Client" Association="Self.FK_Client">
+      <End Role="Actor" EntitySet="Actor" />
+      <End Role="Booking" EntitySet="Booking" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Client_Ev" Association="Self.FK_Client_Ev">
+      <End Role="Actor" EntitySet="Actor" />
+      <End Role="Event" EntitySet="Event" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Client_Rec" Association="Self.FK_Client_Rec">
+      <End Role="Actor" EntitySet="Actor" />
+      <End Role="Receipt" EntitySet="Receipt" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Eating" Association="Self.FK_Eating">
+      <End Role="RoomEating" EntitySet="RoomEating" />
+      <End Role="Room" EntitySet="Room" />
+    </AssociationSet>
+    <AssociationSet Name="FK_EventID" Association="Self.FK_EventID">
+      <End Role="Event" EntitySet="Event" />
+      <End Role="EventRooms" EntitySet="EventRooms" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Receipt" Association="Self.FK_Receipt">
+      <End Role="Receipt" EntitySet="Receipt" />
+      <End Role="Booking" EntitySet="Booking" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Receipt_Ev" Association="Self.FK_Receipt_Ev">
+      <End Role="Receipt" EntitySet="Receipt" />
+      <End Role="Event" EntitySet="Event" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Role" Association="Self.FK_Role">
+      <End Role="Roles" EntitySet="Roles" />
+      <End Role="Actor" EntitySet="Actor" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Room" Association="Self.FK_Room">
+      <End Role="Room" EntitySet="Room" />
+      <End Role="Cleaning" EntitySet="Cleaning" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Rooms" Association="Self.FK_Rooms">
+      <End Role="Room" EntitySet="Room" />
+      <End Role="BookingRooms" EntitySet="BookingRooms" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RoomsEvent" Association="Self.FK_RoomsEvent">
+      <End Role="Room" EntitySet="Room" />
+      <End Role="EventRooms" EntitySet="EventRooms" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Window" Association="Self.FK_Window">
+      <End Role="RoomWindow" EntitySet="RoomWindow" />
+      <End Role="Room" EntitySet="Room" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

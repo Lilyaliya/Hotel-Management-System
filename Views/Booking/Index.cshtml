@@ -1,0 +1,318 @@
+﻿@model Hotel.ViewModel.BookingViewModel
+@using Hotel.Models
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Бронирование</h2>
+
+<!--<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.13.2.min.js"></script>-->
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var room = $("#ddRooms").val();
+        var departure = $("#txtDeparture").val();
+        var arrival = $("#txtArrival").val();
+        UpdBill(room, departure, arrival);
+        UpdRooms(departure, arrival);
+        $("#btnSave").click(function () {
+            if (!$("#formBooking").valid()) {
+                return;
+            }
+            AddBooking();
+        });
+        LoadBooking();
+    });
+
+
+
+    $(function () {
+
+        $.datepicker.regional['ru'] = {
+            closeText: 'Закрыть',
+            prevText: 'Предыдущий',
+            nextText: 'Следующий',
+            currentText: 'Сегодня',
+            monthNames: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+            monthNamesShort: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
+            dayNames: ['воскресенье', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'],
+            dayNamesShort: ['вск', 'пнд', 'втр', 'срд', 'чтв', 'птн', 'сбт'],
+            dayNamesMin: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+            weekHeader: 'Не',
+            dateFormat: 'dd-M-yy',
+            firstDay: 1,
+            isRTL: false,
+            showMonthAfterYear: false,
+            yearSuffix: ''
+        };
+        //$.datepicker.setDefaults($.datepicker.regional['ru']);
+
+        $('.datepicker').datepicker({
+            dateFormat: 'dd-M-yy',
+            changeMonth: true,
+            changeYear: true,
+            showOn: 'button',
+            sideBySide: true,
+            controlType: 'select',
+            showButtonPanel: true,
+            buttonText: '<span class="glyphicon glyphicon-calendar"></span>',
+            minDate: new Date()
+        });
+        $("#txtArrival").change(function () {
+            var date2 = $("#txtArrival").datepicker('getDate', '+1d');
+            date2.setDate(date2.getDate() + 1);
+            $("#txtDeparture").datepicker('option', 'minDate', date2);
+            $("#txtDeparture").datepicker('setDate', date2);
+            var room = $("#ddRooms").val();
+            var departure = $("#txtDeparture").val();
+            var arrival = $("#txtArrival").val();
+            UpdBill(room, departure, arrival);
+            var date = new Date();
+            var selected = new Date(arrival);
+            if (selected.getDate() === date.getDate())
+                UpdRooms(departure, arrival);
+            else
+                AllRooms(departure, arrival);
+        });
+        $("#txtDeparture").change(function () {
+            var room = $("#ddRooms").val();
+            var departure = $("#txtDeparture").val();
+            var arrival = $("#txtArrival").val();
+            var selected = new Date(arrival);
+            if (selected.getDate() === date.getDate())
+                UpdRooms(departure, arrival);
+            else
+                AllRooms(departure, arrival);
+            UpdBill(room, departure, arrival);
+        });
+        $("#ddRooms").on('change', function() {
+            var room = this.value;
+            var departure = $("#txtDeparture").val();
+            var arrival = $("#txtArrival").val();
+            UpdBill(room, departure, arrival);
+        });
+
+    }
+    );
+
+    function LoadBooking() {
+        $.ajax({
+            async: true,
+            type: 'GET',
+            dataType: 'HTML',
+            contentType: false,
+            processType: false,
+            url: '/Booking/GetBookingHistory',
+            success: function (data) {
+                $("#divBooking").html(data);
+            },
+            error: function () {
+                alert("Возникли проблемы с вашим запросом. Повторите попытку позже...");
+            }
+        })
+    }
+
+    function UpdBill(roomNum, departure, arrival) {
+        $.ajax({
+            async: true,
+            type: 'GET',
+            dataType: 'JSON',
+            contentType: 'application/json; charset=utf-8',
+            data: { roomNum: roomNum, departure: departure, arrival: arrival },
+            url: '/Booking/GetBill',
+            success: function (data) {
+                console.log(data);
+                $("#txtBill").val(data.total);
+            },
+            error: function () {
+                alert("Возникли проблемы с вашим запросом. Повторите попытку позже...");
+            },
+
+        })
+    }
+
+    function UpdRooms(departure, arrival) {
+
+        var room = $("#ddRooms option:selected").val();
+        $.ajax({
+            async: true,
+            type: 'GET',
+            dataType: 'JSON',
+            data: {departure: departure, arrival: arrival },
+            url: '@Url.Action("MinusRoomList", "Booking")',
+            success: function (data) {
+                console.log(data);
+                var list = JSON.parse( JSON.stringify(data));
+                var s = '';
+                for (var i = 0; i < list.length; i++) {
+                    s += '<option value="' + list[i].Value + '">' + list[i].Text + '</option>';
+                }
+                $('#ddRooms').html(s);
+            },
+            error: function () {
+                alert("Возникли проблемы с вашим запросом. Повторите попытку позже...");
+            },
+
+        })
+    };
+
+
+    function AllRooms(departure, arrival) {
+                var room = $("#ddRooms option:selected").val();
+                $.ajax({
+                    async: true,
+                    type: 'GET',
+                    dataType: 'JSON',
+                    //contentType: 'application/json; charset=utf-8',
+                    //data: JSON.stringify(room),
+                    data: { departure: departure, arrival: arrival },
+                    url: '@Url.Action("PlusRoomList", "Booking")',
+                    success: function (data) {
+                        console.log(data);
+                        var list = JSON.parse( JSON.stringify(data));
+                        var s = '';
+                        for (var i = 0; i < list.length; i++) {
+                            s += '<option value="' + list[i].Value + '">' + list[i].Text + '</option>';
+                        }
+                        $('#ddRooms').html(s);
+                    },
+                    error: function () {
+                        alert("Возникли проблемы с вашим запросом. Повторите попытку позже...");
+                    },
+
+                })
+            }
+
+    function ResetBooking() {
+        $("#ddClients").val(1);
+        $("#ddRooms").val(1);
+        $("#txtArrival").val('');
+        $("#txtDeparture").val('');
+        $("#txtBill").val('');
+        $("#ddClients").focus();
+    }
+
+    function AddBooking() {
+        var booking = {}
+        booking.Client = $("#ddClients").val();
+        booking.Room = $("#ddRooms").val();
+        booking.Arrival = $("#txtArrival").val();
+        booking.Departure = $("#txtDeparture").val();
+
+
+        $.ajax({
+            async: true,
+            type: 'POST',
+            dataType: 'JSON',
+            contentType: 'application/json; charset=utf-8',
+            url: '/Booking/Index',
+            data: JSON.stringify(booking),
+            success: function (data) {
+                if (data.success === true) {
+                    alert(data.message);
+                    ResetBooking();
+                    LoadBooking();
+                }
+            },
+            error: function () {
+                alert("Возникли проблемы с вашим запросом. Повторите попытку позже...");
+            },
+
+        })
+    }
+    // функция обновляет список доступных комнат в связи с изменением даты бронирования
+    function CheckRoomList() {
+        var booking = {}
+        booking.Arrival = $("#txtArrival").val();
+        booking.Departure = $("#txtDeparture").val();
+
+         var room = $("#ddRooms option:selected").val();
+                $.ajax({
+                    async: true,
+                    type: 'GET',
+                    dataType: 'JSON',
+                    //contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(room),
+                    url: '@Url.Action("PlusRoomList", "Booking")',
+                    success: function (data) {
+                        console.log(data);
+                        var list = JSON.parse( JSON.stringify(data));
+                        var s = '';
+                        for (var i = 0; i < list.length; i++) {
+                            s += '<option value="' + list[i].Value + '">' + list[i].Text + '</option>';
+                        }
+                        $('#ddRooms').html(s);
+                    },
+                    error: function () {
+                        alert("Возникли проблемы с вашим запросом. Повторите попытку позже...");
+                    },
+
+                })
+    }
+</script>
+
+
+<div style="margin-top: 30px">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#divNewBooking" data-backdrop="static" data-keyboard="false"> Забронировать комнату</button>
+</div>
+
+<div id="divNewBooking" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 600px">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Комната</h4>
+            </div>
+            <div class="modal-body">
+                <form id="formBooking">
+                    <div class="container" style="width: 600px; height: 300px">
+                        <!---->
+
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.Room, new { @class = "control-label" })
+                                @Html.DropDownListFor(model => model.Room, @Model.ListRooms, new { @class = "form-control", @id = "ddRooms" })
+                            </div>
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.Client, new { @class = "control-label" })
+                                @Html.DropDownListFor(model => model.Client, @Model.ListClients, new { @class = "form-control", @id = "ddClients" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.Arrival, new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Arrival, new { htmlAttributes = new { @readonly = true, @class = "datepicker", Value = Model.Arrival.ToString("dd-MMM-yyyy"), @id = "txtArrival" } })
+                                <!--Html.EditorFor(model => model.Arrival, new { htmlAttributes = new { readonly = "true", Value = Model.Arrival.ToString("dd-MMM-yyyy"), class = "form-control datepicker", id = "txtArrival" } })-->
+                                <!--<span id="datepick" class="glyphicon glyphicon-calendar" onclick="DateTimePicker()"></span> &nbsp;&nbsp;-->
+                                @Html.ValidationMessageFor(model => model.Arrival, null, new { @class = "text-danger", @id = "txtArrival" })
+                            </div>
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.Departure, new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Departure, new { htmlAttributes = new { @readonly = true, @class = "datepicker", Value = Model.Departure.ToString("dd-MMM-yyyy"), @id = "txtDeparture" } })
+                                <!--Html.EditorFor(model => model.Departure, new { htmlAttributes = new { readonly = "true", Value = Model.Departure.ToString("dd-MMM-yyyy"), class = "form-control datepicker", id = "txtDeparture" } })-->
+                                @Html.ValidationMessageFor(model => model.Departure, null, new { @class = "text-danger", @id = "txtDeparture" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.Bill, new { @class = "control-label" })
+                                @Html.TextBoxFor(model=>model.Bill, new { @readonly = true, @class = "form-control", @id = "txtBill"})
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="btnSave" type="button" class="btn btn-success">Сохранить</button>&nbsp;
+                <button type="button" data-dismiss="modal" class="btn btn-danger">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="margin-top: 20px"></div>
+<div id="divBooking">
+
+</div>

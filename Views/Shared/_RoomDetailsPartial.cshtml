@@ -1,0 +1,78 @@
+﻿@model IEnumerable<Hotel.ViewModel.RoomDetailsView>
+<link href="~/Content/styles.css" rel="stylesheet"  />
+<table style="width: 100%">
+    <thead>
+        <tr>
+            <th>
+                Действие
+            </th>
+            <th>
+                Номер
+            </th>
+            <th>
+                Фото номера
+            </th>
+            <th>
+                Этаж
+            </th>
+            <th>
+                Количество мест
+            </th>
+            <th>
+                Категория
+            </th>
+            <th>
+                Вид из окна
+            </th>
+            <th>
+                Тип питания
+            </th>
+            <th>
+                Стоимость
+            </th>
+            <th>
+                Нуждается в очистке
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <span id="btnDelete" class="glyphicon glyphicon-trash" onclick="DeleteRoom(@item.RoomNum)"></span> &nbsp;&nbsp;
+                    <span id="btnEdit" class="glyphicon glyphicon-pencil" onclick="EditRoom(@item.RoomNum)"></span>
+                </td>
+
+                <td>
+                    @item.RoomNum
+                </td>
+                <td>
+                    <img src="@Url.Content("~/RoomImages/"+item.RoomImage)" width="80" height="80" class="img-responsive" />
+                </td>
+                <td>
+                    @item.C_Floor
+                </td>
+                <td>
+                    @item.Places
+                </td>
+                <td>
+                    @item.CategoryClass
+                </td>
+                <td>
+                    @item.CategoryWindow
+                </td>
+                <td>
+                    @item.CategoryEating
+                </td>
+                <td>
+                    @item.cost
+                </td>
+                <td>
+                    @item.dirty
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

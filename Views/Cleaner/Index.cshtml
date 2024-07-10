@@ -1,0 +1,145 @@
+﻿@model Hotel.ViewModel.CleanJournalView
+@{
+    ViewBag.Title = "Clean Check";
+}
+
+<h2>Журнал уборки</h2>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        LoadJournal();
+        $("#ddRooms").val(1);
+        $("#ddRooms").focus();
+        $("#btnSave").click(function () {
+            if (!$("#formRoom").valid()) {
+                return;
+            }
+            SaveEntryData();
+        });
+    });
+
+
+
+    function LoadJournal() {
+
+        $.ajax({
+            async: true,
+            data: 'GET',
+            dataType: 'HTML',
+            contentType: false,
+            processData: false,
+            url: '/Cleaner/GetAllEntries',
+            success: function (data) {
+                $("#divLoadJournal").html(data);
+            },
+            error: function () {
+                alert('Возникли проблемы с вашим запросом.');
+            }
+        })
+    }
+
+     function UpdRooms() {
+
+        var room = $("#ddRooms option:selected").val();
+        $.ajax({
+            async: true,
+            type: 'GET',
+            dataType: 'JSON',
+            //contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(room),
+            url: '@Url.Action("UpdRooms", "Cleaner")',
+            success: function (data) {
+                console.log(data);
+                var list = JSON.parse( JSON.stringify(data));
+                var s = '';
+                for (var i = 0; i < list.length; i++) {
+                    s += '<option value="' + list[i].Value + '">' + list[i].Text + '</option>';
+                }
+                $('#ddRooms').html(s);
+            },
+            error: function () {
+                alert("Возникли проблемы с вашим запросом. Повторите попытку позже...");
+            },
+
+        })
+    };
+
+    function SaveEntryData() {
+        var formData = new FormData;
+        formData.append("RoomView", $("#ddRooms").val());
+        formData.append("ChangeID", $("#txtChange").val());
+
+
+        $.ajax({
+            async: true,
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (data) {
+                if (data.success === true) {
+                    alert(data.message);
+                    ResetRoomInformation();
+                    LoadJournal();
+                }
+            },
+            error: function () {
+                alert('Произошла проблема с вашим запросом. Попробуйте еще раз!');
+            }
+        })
+    }
+    function ResetRoomInformation() {
+        $("#ddRooms").val(1);
+        $("#ddRooms").focus();
+        UpdRooms();
+        var date = new Date();
+        var n = date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+        $("#txtToday").val(n);
+        $("#btnSave").text("Сохранить");
+    }
+</script>
+
+
+<div style="margin-top: 30px">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#divAddRoom" data-backdrop="static" data-keyboard="false">Обновить статус уборки</button>
+</div>
+<div id="divAddRoom" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 600px">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Запись уборки</h4>
+            </div>
+            <div class="modal-body">
+                <form id="formRoom">
+                    <div class="container" style="width: 600px">
+                        <div class="form-group col-md-6">
+                            @Html.LabelFor(model => model.Room)
+                            @Html.DropDownListFor(model => model.RoomView, @Model.ListRooms, new { @class = "form-control", id = "ddRooms" })
+                        </div>
+                        <div class="form-group col-md-6">
+                            @Html.LabelFor(model => model.Today)
+                            @Html.TextBoxFor(model => model.Today, new { @readonly = true, Value = Model.Today.ToString("HH\\:mm"), @class = "form-control", @id = "txtToday" })
+                        </div>
+                        <div class="form-group col-md-6">
+                            @Html.LabelFor(model => model.ChangeID, new { @class = "control-label" })
+                            @Html.TextBoxFor(model => model.ChangeID, new { @readonly = true, @class = "form-control", @id = "txtChange" })
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="btnSave" type="button" class="btn btn-success">Записать</button>&nbsp;
+                <button type="button" data-dismiss="modal" class="btn btn-danger">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="margin-top: 20px"></div>
+<div id="divLoadJournal">
+
+</div>
+
+

@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Hotel.ViewModel.BookingViewModel>
+<link href="~/Content/styles.css" rel="stylesheet" />
+<table style="width: 100%">
+    <thead>
+        <tr>
+            <th>
+                Посетитель
+            </th>
+            <th>
+                Номер телефона
+            </th>
+            <th>
+                Помещение
+            </th>
+            <th>
+                Дата заселения
+            </th>
+            <th>
+                Дата выселения
+            </th>
+            <th>
+                Продолжительность (сут)
+            </th>
+            <th>
+                Полная стоимость
+            </th>
+        </tr>
+
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.FullName
+                </td>
+                <td>
+                    @item.Contacts
+                </td>
+                <td>
+                    @item.Room
+                </td>
+                <td>
+                    @item.Arrival.ToString("dd-MMM-yyyy")
+                </td>
+                <td>
+                    @item.Departure.ToString("dd-MMM-yyyy")
+                </td>
+                <td>
+                    @item.Days
+                </td>
+                <td>
+                    @item.Bill.ToString("#,##0.00")
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

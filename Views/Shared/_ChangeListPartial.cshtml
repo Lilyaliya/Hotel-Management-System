@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Hotel.Models.Change>
+
+<link href="~/Content/styles.css" rel="stylesheet" />
+<table style="width: 100%">
+    <thead>
+        <tr>
+            <th>
+                Смена №
+            </th>
+            <th>
+                Рабочий день
+            </th>
+            <th>
+                Сотрудник
+            </th>
+            <th>
+                Контактный номер
+            </th>
+            <th>
+                Эл. почта
+            </th>
+        </tr>
+
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td > 
+                    @item.ID
+                </td>
+                <td >
+                    <!--(item.Actor.Count())-->
+                    @((DateTime)(item.ChangeDate))
+                </td>
+                </tr>
+                foreach (var i in item.Actor)
+                {
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            @i.FullName
+                        </td>
+                        <td>
+                            @i.ContactPhone
+                        </td>
+                        <td>
+                            @i.Email
+                        </td>
+                    </tr>
+            }
+
+        }
+    </tbody>
+    </table>
+
+
+ 

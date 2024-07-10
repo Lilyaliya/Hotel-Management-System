@@ -1,0 +1,363 @@
+﻿@model Hotel.ViewModel.EventViewModel
+@using Hotel.Models
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Регистрация мероприятий</h2>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var room = $("#ddRooms").val();
+        var category = $("#ddCategory").val();
+        UpdRooms(category);
+        $("#btnSave").click(function () {
+            if (!$("#formBooking").valid()) {
+                return;
+            }
+            AddBooking();
+        });
+        LoadBooking();
+        LoadEvents();
+    });
+
+
+
+    $(function () {
+
+        $.datepicker.regional['ru'] = {
+            closeText: 'Закрыть',
+            prevText: 'Предыдущий',
+            nextText: 'Следующий',
+            currentText: 'Сегодня',
+            monthNames: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+            monthNamesShort: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
+            dayNames: ['воскресенье', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'],
+            dayNamesShort: ['вск', 'пнд', 'втр', 'срд', 'чтв', 'птн', 'сбт'],
+            dayNamesMin: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+            weekHeader: 'Не',
+            dateFormat: 'dd-M-yy',
+            firstDay: 1,
+            isRTL: false,
+            showMonthAfterYear: false,
+            yearSuffix: ''
+        };
+        //$.datepicker.setDefaults($.datepicker.regional['ru']);
+
+        $('.datepicker').datepicker({
+            dateFormat: 'dd-M-yy',
+            changeMonth: true,
+            changeYear: true,
+            showOn: 'button',
+            sideBySide: true,
+            controlType: 'select',
+            showButtonPanel: true,
+            buttonText: '<span class="glyphicon glyphicon-calendar"></span>',
+            minDate: new Date()
+        });
+       
+        $("#ddCategory").on('change', function() {
+            var category = this.value;
+            UpdRooms(category);
+            //LoadBooking();
+        });
+
+
+
+    }
+    );
+
+    function LoadBooking() {
+        $.ajax({
+            async: true,
+            type: 'GET',
+            dataType: 'HTML',
+            contentType: false,
+            processType: false,
+            url: '/Events/GetChoosenRooms',
+            success: function (data) {
+                $("#divRooms").html(data);
+            },
+            error: function () {
+                alert("Возникли проблемы с вашим запросом. Повторите попытку позже...");
+            }
+        })
+    };
+
+    function LoadEvents() {
+        
+        $.ajax({
+            async: true,
+            type: 'GET',
+            dataType: 'HTML',
+            contentType: false,
+            processType: false,
+            url: '/Events/GetEvents',
+            success: function (data) {
+                $("#divEvent").html(data);
+            },
+            error: function () {
+                alert("Возникли проблемы с вашим запросом. Повторите попытку позже...");
+            }
+        })
+    }
+
+    function UpdBill() {
+        $.ajax({
+            async: true,
+            type: 'GET',
+            dataType: 'JSON',
+            contentType: 'application/json; charset=utf-8',
+            //data: { roomNum: roomNum, departure: departure, arrival: arrival },
+            url: '/Events/GetBill',
+            success: function (data) {
+                console.log(data);
+                if (data.success)
+                    $("#txtBill").val(data.total);
+            },
+            error: function () {
+                alert("Возникли проблемы с вашим запросом. Повторите попытку позже...");
+            },
+
+        })
+    }
+
+    function UpdRooms(category) {
+
+        var room = $("#ddRooms option:selected").val();
+        $.ajax({
+            async: true,
+            type: 'GET',
+            dataType: 'JSON',
+            data: {category: category},
+            url: '@Url.Action("UpdateRooms", "Events")',
+            success: function (data) {
+                console.log(data);
+                var list = JSON.parse( JSON.stringify(data));
+                var s = '';
+                for (var i = 0; i < list.length; i++) {
+                    s += '<option value="' + list[i].Value + '">' + list[i].Text + '</option>';
+                }
+                $('#ddRooms').html(s);
+                LoadBooking();
+            },
+            error: function () {
+                alert("Возникли проблемы с вашим запросом. Повторите попытку позже...");
+            },
+
+        })
+    };
+
+    function DeleteRoom(room, category) {
+        $.ajax({
+            async: true,
+            type: 'GET',
+            dataType: 'JSON',
+            data: {room: room, categoryClass: category},
+            url: '@Url.Action("RemoveFromList", "Events")',
+            success: function (data) {
+                console.log(data);
+                var list = JSON.parse( JSON.stringify(data));
+                var s = '';
+                for (var i = 0; i < list.length; i++) {
+                    s += '<option value="' + list[i].Value + '">' + list[i].Text + '</option>';
+                }
+                $('#ddRooms').html(s);
+                UpdBill();
+                LoadBooking();
+            },
+            error: function () {
+                alert("Возникли проблемы с вашим запросом. Повторите попытку позже...");
+            },
+
+        })
+    };
+
+    function AddRoom() {
+        var room = $("#ddRooms").val();
+        var category = $("#ddCategory").val();
+        $.ajax({
+            async: true,
+            type: 'GET',
+            dataType: 'JSON',
+            data: {room: room, categoryClass: category},
+            url: '@Url.Action("AddToList", "Events")',
+            success: function (data) {
+                console.log(data);
+                var list = JSON.parse( JSON.stringify(data));
+                var s = '';
+                for (var i = 0; i < list.length; i++) {
+                    s += '<option value="' + list[i].Value + '">' + list[i].Text + '</option>';
+                }
+                $('#ddRooms').html(s);
+                UpdBill();
+                LoadBooking();
+            },
+            error: function () {
+                alert("Возникли проблемы с вашим запросом. Повторите попытку позже...");
+            },
+
+        })
+    };
+
+    function AllRooms(departure, arrival) {
+                var room = $("#ddRooms option:selected").val();
+                $.ajax({
+                    async: true,
+                    type: 'GET',
+                    dataType: 'JSON',
+                    //contentType: 'application/json; charset=utf-8',
+                    //data: JSON.stringify(room),
+                    data: { departure: departure, arrival: arrival },
+                    url: '@Url.Action("PlusRoomList", "Booking")',
+                    success: function (data) {
+                        console.log(data);
+                        var list = JSON.parse( JSON.stringify(data));
+                        var s = '';
+                        for (var i = 0; i < list.length; i++) {
+                            s += '<option value="' + list[i].Value + '">' + list[i].Text + '</option>';
+                        }
+                        $('#ddRooms').html(s);
+                    },
+                    error: function () {
+                        alert("Возникли проблемы с вашим запросом. Повторите попытку позже...");
+                    },
+
+                })
+            }
+
+    function ResetBooking() {
+        $("#ddClients").val(1);
+        $("#ddRooms").val(1);
+        $("#txtName").val('');
+        $("#txtDescr").val('');
+        $("#txtDate").val('');
+        $("#txtVisit").val('');
+        $("#ddClients").focus();
+    }
+
+    function AddBooking() {
+        var newEvent = {}
+        newEvent.Client = $("#ddClients").val();
+        newEvent.Name = $("#txtName").val();
+        newEvent.Description = $("#txtDescr").val();
+        newEvent.C_Date = $("#txtDate").val();
+        newEvent.Visitors = $("#txtVisit").val();
+        newEvent.Bill = $("#txtBill").val();
+        
+
+
+        $.ajax({
+            async: true,
+            type: 'POST',
+            dataType: 'JSON',
+            contentType: 'application/json; charset=utf-8',
+            url: '/Events/Index',
+            data: JSON.stringify(newEvent),
+            success: function (data) {
+                if (data.success === true) {
+                    alert(data.message);
+                    ResetBooking();
+                    LoadBooking();
+                    LoadEvents();
+                }
+            },
+            error: function () {
+                alert("Возникли проблемы с вашим запросом. Повторите попытку позже...");
+            },
+
+        })
+    }
+   
+</script>
+
+
+<div style="margin-top: 30px">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#divNewEvent" data-backdrop="static" data-keyboard="false">Регистрация мероприятия</button>
+</div>
+
+<div id="divNewEvent" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 700px">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Форма для мероприятия</h4>
+            </div>
+            <div class="modal-body">
+                <form id="formBooking">
+                    <div class="container" style="overflow-y: scroll; width: 700px; height: 300px">
+                        <!---->
+
+
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.Client, new { @class = "control-label" })
+                                @Html.DropDownListFor(model => model.Client, @Model.ListClients, new { @class = "form-control", @id = "ddClients" })
+                            </div>
+                            <div class="form-group col-md-6" style="margin-top: 20px">
+                                @Html.LabelFor(model => model.C_Date, new { @class = "control-label" })
+                                @Html.EditorFor(model => model.C_Date, new { htmlAttributes = new { @readonly = true, @class = "datepicker", Value = Model.C_Date.ToString("dd-MMM-yyyy"), @id = "txtDate" } })
+                                @Html.ValidationMessageFor(model => model.C_Date, null, new { @class = "text-danger", @id = "txtDate" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.Name, new { @class = "control-label" })
+                                @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @id = "txtName" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.Description, new { @class = "control-label" })
+                                @Html.TextBoxFor(model => model.Description, new { @class = "form-control", @id = "txtDescr" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.Visitors, new { @class = "control-label" })
+                                @Html.TextBoxFor(model => model.Visitors, new { @class = "form-control", @id = "txtVisit" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.Bill, new { @class = "control-label" })
+                                @Html.TextBoxFor(model => model.Bill, new { @readonly = true, @class = "form-control", @id = "txtBill" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                @Html.LabelFor(model => model.CategoryClass, new { @class = "control-label" })
+                                @Html.DropDownListFor(model => model.CategoryClass, @Model.ListCategoryClass, new { @class = "form-control", @id = "ddCategory" })
+                            </div>
+                            <div class="form-group col-md-4">
+                                @Html.LabelFor(model => model.selectedRoom, new { @class = "control-label" })
+                                @Html.DropDownListFor(model => model.selected, @Model.ListRooms, new { @class = "form-control", @id = "ddRooms" })
+                            </div>
+                            <div class="form-group col-md-4" style="margin-top: 25px">
+                                <button type="button" class="btn btn-primary" onclick="AddRoom()" data-toggle="modal" data-target="#divNewRoom" data-backdrop="static" data-keyboard="false">Добавить в заказ</button>
+                            </div>
+                        </div>
+                        <!--Для списка выбранных комнат-->
+                        <div class="row" style="margin-top: 30px; margin-left: 20px">
+                            <div id="divRooms">
+
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="btnSave" type="button" class="btn btn-success">Сохранить</button>&nbsp;
+                <button type="button" data-dismiss="modal" class="btn btn-danger">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="margin-top: 20px"></div>
+<div id="divEvent">
+
+</div>

@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Hotel.ViewModel.EmployeesView>
+<link href="~/Content/styles.css" rel="stylesheet"  />
+<table style="width: 100%">
+    <thead>
+        <tr>
+            <th>
+                Действие
+            </th>
+            <th>
+                ФИО сотрудника
+            </th>
+            <th>
+                Должность
+            </th>
+            <th>
+                Эл. почта
+            </th>
+            <th>
+                Контактный номер
+            </th>
+            <th>
+                Паспорт
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <span id="btnDecline" class="glyphicon glyphicon-remove" onclick="DeclineActor(@item.ID)"></span> &nbsp;&nbsp;
+                    <span id="btnVerify" class="glyphicon glyphicon-ok" onclick="VerifyActor(@item.ID)"></span>
+                </td>
+
+                <td>
+                    @item.FullName
+                </td>
+                <td>
+                    @(item.Role == "AGENT"? "Агент по бронированию" : "Сотрудник клининга")
+                </td>
+                <td>
+                    @item.Email
+                </td>
+                <td>
+                    @item.ContactPhone
+                </td>
+                <td>
+                    @item.Passport
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

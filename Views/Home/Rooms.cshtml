@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/load-rooms.js"></script>
+<link href="~/Content/home.css" rel="stylesheet" />
+<section class="rooms">
+    <div class="container">
+        <h5 class="section-head">
+            <br />
+            <br />
+            <span class="heading">
+                Ассортимент помещений
+            </span>
+            <span class="sub-heading">
+                Любые номера на ваш вкус
+            </span>
+        </h5>
+        <div id="grid" class="grid">
+            <div class="grid-item featured-rooms">
+                <div class="image-wrap">
+                    <img src="@Url.Content("~/Image/Preview.jpg")" width="300" height="300" class="room-image" />
+                    <h5 class="room-name">
+                        dfhncfghcyjh
+                    </h5>
+                </div>
+                <div class="room-info-wrap">
+                    <span class="room-price">
+                        200$ <span class="per-night">За ночь</span>
+                    </span>
+                    <p class="paragraph">
+                        В нашем отеле есть все необходимое для безупречного проведения любого мероприятия.
+                    </p>
+                    <a href="#" class="btn rooms-btn">
+                        Забронировать &rarr;
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

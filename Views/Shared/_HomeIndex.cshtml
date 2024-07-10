@@ -1,0 +1,24 @@
+﻿@model IEnumerable<Hotel.ViewModel.RoomDetailsView>
+
+@foreach (var item in Model)
+{
+    <div class="grid-item featured-rooms">
+        <div class="image-wrap">
+            <img src="@Url.Content("~/RoomImages/"+item.RoomImage)" width="300" height="300" class="room-image" />
+            <h5 class="room-name">
+                @item.CategoryClass
+            </h5>
+        </div>
+        <div class="room-info-wrap">
+            <span class="room-price">
+                @item.cost <span class="per-night">За ночь</span>
+            </span>
+            <p class="paragraph">
+                В нашем отеле есть все необходимое для безупречного проведения любого мероприятия.
+            </p>
+            @*<a href="#" class="btn rooms-btn">
+                    Забронировать &rarr;
+                </a>*@
+        </div>
+    </div>
+}
